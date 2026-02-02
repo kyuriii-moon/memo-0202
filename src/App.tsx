@@ -46,12 +46,35 @@ function App() {
   const handleDeleteMemo = (id: number) => {
     setMemos(memos.filter((memo) => memo.id !== id));
   };
+/**
+   * 전체 메모 삭제 함수
+   */
+  const handleClearAll = () => {
+    if (memos.length === 0) {
+      alert('삭제할 메모가 없습니다.');
+      return;
+    }
+    
+    if (window.confirm(`정말 ${memos.length}개의 메모를 모두 삭제하시겠습니까?`)) {
+      setMemos([]);
+    }
+  };
 
   return (
     <div className="app">
       <h1 className="app-title">📝 메모장</h1>
       
       <MemoForm onAddMemo={handleAddMemo} />
+      
+       {/* 전체 삭제 버튼 추가 */}
+      {memos.length > 0 && (
+        <button 
+          className="clear-all-button"
+          onClick={handleClearAll}
+        >
+          🗑️ 전체 삭제
+        </button>
+      )}
       
       <MemoList
         memos={memos}
@@ -61,6 +84,9 @@ function App() {
 
       <p className="memo-count">
         총 {memos.length}개의 메모
+        <span style={{ fontSize: '0.7rem', marginLeft: '8px', color: '#aaa' }}>
+          v{import.meta.env.VITE_APP_VERSION}
+        </span>
       </p>
     </div>
   );
